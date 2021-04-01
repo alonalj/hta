@@ -1,7 +1,7 @@
 from scipy import stats
 from collections import Counter
 
-from utils.utils import *
+from utils import *
 
 CLT_REPEAT = 1000
 EPSILON = 1e-100
@@ -127,7 +127,7 @@ class HTA:
 
     def calc(self):
         ''' Main function for computing HTA. Handles both HTA index value and p-value.
-        returns: hta and Lyapunov CLT p-value
+        returns: hta_stats and Lyapunov CLT p-value
         '''
 
         self._t_regions, self._t_weights, self._t_regions_ijk_nonempty = self._get_region_data_from_tensor(self._t)

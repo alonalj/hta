@@ -4,11 +4,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="hta", # Replace with your own username
+    name="hta_stats", # Replace with your own username
     version="1.0",
     author="Alona Levy-Jurgenson",
     author_email="levyalona@gmail.com",
-    description="Spatial heterogeneity using HTA",
+    description="Spatial heterogeneity tools and statistics",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="TODO_https://github.com/pypa/sampleproject",

@@ -1,4 +1,4 @@
-from hta.hta import *
+from hta_stats.hta import *
 
 
 def _make_heterogeneous_regions(shape, region_size):
