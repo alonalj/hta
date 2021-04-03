@@ -117,7 +117,7 @@ class Visium():
             barcodes_path = os.path.join(path, "barcodes.tsv.gz")
             barcodes = [row[0] for row in csv.reader(gzip.open(barcodes_path, mode="rt"), delimiter="\t")]  # cols
 
-            m = mat.tocsr()
+            m = mat.tocsr()  # genes x barcodes (rows x cols)
             # b = m.toarray()
             # b = m[:1000,:1000].toarray()
             self.feature_matrix = m
@@ -233,7 +233,7 @@ class Visium():
 
     def _assert_trait_names_in_data(self, trait_names):
         for t in trait_names:
-            assert t in self.traits_available, "Trait {} not in data. Use .traits_available to see which are available."
+            assert t in self.traits_available, "Trait {} not in data. Use .traits_available to see which are available.".format(t)
 
     def plot_heatmap_per_trait(self, out_path):
         for trait_ix in range(self.trait_tensor.shape[-1]):

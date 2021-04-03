@@ -75,7 +75,7 @@ class HTA:
     Class used to compute HTA.
     '''
 
-    def __init__(self, t, region_size, n_repeat=100, keep_combinations=[], tissue_mask=[]):
+    def __init__(self, t, region_size, n_repeat=CLT_REPEAT, keep_combinations=[], tissue_mask=[]):
         '''
         t: the trait tensor -- a numpy ndarray where the first two or three dimensions
         represent the spatial dimensions (i.e., the x, y, z axes). The remaining dimensions, each, represent a single trait,
@@ -463,6 +463,10 @@ class HTA:
             # cmap = plt.get_cmap('gist_rainbow')
             cmap = plt.get_cmap('rainbow')
             cmap_list = [cmap(i) for i in range(cmap.N)]
+            cmap_list_extension = [tuple(np.add(cmap_list[i],cmap_list[i+1])/2) for i in range(len(cmap_list)-1)]
+            cmap_list.extend(cmap_list_extension)
+            assert len(cmap_list) >= n_trait_combs_nonempty + 1, "Number of trait combinations is {} which larger than" \
+                                                                 " available colors. Apply additional colormap extentions.".format(len(cmap_list))
             n_per_slice = len(cmap_list) // (n_trait_combs_nonempty + 1)
             new_cmaps_list = []
             for i in range(n_trait_combs_nonempty + 1):
