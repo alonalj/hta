@@ -65,6 +65,7 @@ If you are analysing Visium spatial gene expression data (e.g. any of those list
 Make sure you have the following folders from your Visium data:
 
 > filtered_feature_bc_matrix
+>
 > spatial
 
 and place them in a folder hierarchy as shown below (all shown files are required):
