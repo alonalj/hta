@@ -98,8 +98,8 @@ You are now ready to prepare `t` and use HTA:
     hta = HTA(t, region_size=region_size, tissue_mask=t_mask) 
     hta_stat, hta_pval = hta.calc()
 
->What is `t_mask`? It identifies, using barcodes.tsv.gz, which barcodes are under
-> the tissue, and is used to discard barcodeds that are not.
+>What is `t_mask`? It identifies, using barcodes.tsv.gz, which barcodes are
+>  tissue, and is used to discard barcodeds that are not.
 
 Now we can proceed to produce the heterogeneity map and region report (we've left the p-val formatting in the example below for your convenience, but you can replace it with your own title):
 
