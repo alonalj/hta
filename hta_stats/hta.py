@@ -1,7 +1,11 @@
+
+import numpy as np
+import pandas as pd
 from scipy import stats
+import matplotlib.pyplot as plt
 from collections import Counter
 
-from utils import *
+from utils import apply_tissue_mask
 
 CLT_REPEAT = 1000
 EPSILON = 1e-100
@@ -463,8 +467,11 @@ class HTA:
             # cmap = plt.get_cmap('gist_rainbow')
             cmap = plt.get_cmap('rainbow')
             cmap_list = [cmap(i) for i in range(cmap.N)]
-            cmap_list_extension = [tuple(np.add(cmap_list[i],cmap_list[i+1])/2) for i in range(len(cmap_list)-1)]
+            cmap_list_extension = [tuple(np.add(cmap_list[i], cmap_list[i + 1]) / 2) for i in range(len(cmap_list) - 1)]
             cmap_list.extend(cmap_list_extension)
+            while len(cmap_list) < n_trait_combs_nonempty+1:
+                cmap_list_extension = [tuple(np.add(cmap_list_extension[i],cmap_list_extension[i+1])/2) for i in range(len(cmap_list_extension)-1)]
+                cmap_list.extend(cmap_list_extension)
             assert len(cmap_list) >= n_trait_combs_nonempty + 1, "Number of trait combinations is {} which larger than" \
                                                                  " available colors. Apply additional colormap extentions.".format(len(cmap_list))
             n_per_slice = len(cmap_list) // (n_trait_combs_nonempty + 1)

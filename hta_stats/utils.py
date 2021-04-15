@@ -105,6 +105,11 @@ class Visium():
         self.shape = None
 
     def load(self):
+        '''
+        Loads the feature matrix into self.feature_matrix, barcode ids into self.barcode_ids, traits (e.g. genese)
+        available into self.traits_available and barcode positions (row, col in tissue) into the dictionary
+        self.barcode_to_row_col
+        '''
         def load_feature_matrix():
             path = self.path + '/filtered_feature_bc_matrix/'
             mat = scipy.io.mmread(os.path.join(path, "matrix.mtx.gz"))

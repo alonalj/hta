@@ -1,4 +1,4 @@
-from hta_stats.hta import *
+# from hta_stats.hta import *
 
 
 def _make_heterogeneous_regions(shape, region_size):
@@ -177,6 +177,80 @@ def run_visium(gene_exp=True, testing_rand=False, lower_half_of_tissue=False, is
     rr = hta.region_report(trait_names)
     rr.to_csv('../out/region_report_{}_{}.csv'.format('visium', '_'.join(trait_names)))
 
+def run_visium_clusters():
+    from hta_stats.utils import Visium
+    from hta_stats.hta import HTA
+
+    path = "../res/human_breast_cancer/Block_A_sec_1"
+    k = 10
+    clusters_path = '{}/analysis/clustering/kmeans_{}_clusters/clusters.csv'.format(path, k)
+    trait_names = [str(i + 1) for i in range(k)]
+
+    visium = Visium(path)
+    visium.load()
+    t, t_mask = visium.prep_clusters(clusters_path)
+
+    # compute HTA
+    region_size = 15
+    hta = HTA(t, region_size=region_size, tissue_mask=t_mask)
+    hta_stat, hta_pval = hta.calc()
+
+    # plot heretogeneity map
+    hm = hta.plot_heterogeneity_map(trait_names, dot_size=8, is_clusters=True)  # Note the 'is_clusters = True'
+    hm.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=4, fontsize=9)
+
+    # save heterogeneity map
+    title = 'HTA {:.2f} (p-val: {:.2f}), region size: {}'.format(hta_stat, hta_pval, region_size)
+    font_dict = {'family': 'normal', 'size': 9}
+    hm.title(title, fontdict=font_dict)
+    hm.savefig('../out/{}_hetero_map.jpeg'.format('_'.join(trait_names)), dpi=350)
+    hm.close()
+
+
+def run_visium_simple_for_readme():
+    from hta_stats.hta import HTA
+    from hta_stats.utils import Visium
+
+    path = "../res/human_breast_cancer/Block_A_sec_1"  # path to 'data folder' in above hierarchy
+    trait_names = ['ERBB2', 'CD8A']  # names of features to use in features.tsv.gz
+
+    # load and prepare visium data for HTA
+    visium = Visium(path)
+    visium.load()
+    t, t_mask = visium.prep(trait_names)
+
+    # compute HTA and HTA p-val
+    region_size = 15  # modify region_size as needed
+    hta = HTA(t, region_size=region_size, tissue_mask=t_mask)
+    hta_stat, hta_pval = hta.calc()
+
+    import math
+
+    # generate heterogeneity map and legend
+    hm = hta.plot_heterogeneity_map(trait_names, dot_size=8)
+    hm.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=4, fontsize=9)
+
+    # set format for p-val and title
+    if hta_pval <= 10 ** -10000:
+        title = 'HTA {:.2f} (p-val ~ 0), region size: {}'.format(hta_stat, region_size)
+    elif hta_pval < 0.00001:
+        p_power_with_base_10 = math.log10(hta_pval)
+        hta_pval = p_power_with_base_10
+        title = 'HTA {:.2f} (p-val: 10^{:.0f}), region size: {}'.format(hta_stat, hta_pval, region_size)
+    else:
+        title = 'HTA {:.2f} (p-val: {:.2f}), region size: {}'.format(hta_stat, hta_pval, region_size)
+
+        # save heterogeneity map
+    font_dict = {'family': 'normal', 'size': 9}
+    hm.title(title, fontdict=font_dict)
+    hm.savefig('../out/{}_hetero_map.jpeg'.format('_'.join(trait_names)), dpi=350)
+    hm.close()
+
+    # save region report
+    rr = hta.region_report(trait_names)
+    rr.to_csv('../out/{}_region_report.csv'.format('_'.join(trait_names)))
+
+    hti_stat, _, _ = hta._HTI(t)
 
 if __name__ == '__main__':
 
@@ -187,6 +261,8 @@ if __name__ == '__main__':
     # run_visium(gene_exp=True, lower_half_of_tissue=True)
     # run_visium(gene_exp=True, testing_rand=True)
     # run_visium(gene_exp=False, is_clusters=True)
+    run_visium_clusters()
     # run_visium(gene_exp=False, curated_traits_biocarta=True)
+    # run_visium_simple_for_readme()
 
-    run_visium_example()
+    # run_visium_example()
