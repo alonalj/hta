@@ -5,6 +5,8 @@ The HTA package can statistically assess the level of both spatial, and global, 
 ## Prerequisites
 Python 3.8 or above.
 
+## Support and bug reports
+If you encounter any issues, please contact levyalona at gmail.
 
 # Example 1 - Synthetic Data
 
@@ -21,11 +23,11 @@ For **example**, for 2 traits and a 2D space of 32x32, let's generate some rando
     t = np.random.random(t_shape)   # random values between 0 and 1
     t = (t > 0.5)*1   # binarising to 0/1
 
-Now `t` contains two stacked matrices, each of shape 32x32. The first represents trait no. 1, the second represents trait no. 2 and each entry has either 0/1 (1 indicates the trait manifests in that entry).
+Now `t` contains two stacked matrices, each of shape 32x32. The first represents trait no. 1, the second represents trait no. 2 and each entry has either 0/1 (1 indicates that the trait manifests in that entry).
 
 ### HTA:
 
-Once `t` is ready, running HTA is straight forward. 
+Once `t` is ready, we can run HTA. 
 
 For **example**, using `t` from above we can decide on a region size of 8 (i.e., each cell in the grid is 8x8) and run the following:
 
@@ -173,4 +175,4 @@ The main differences in the code below compared to Example 2 above are in the li
     rr = hta.region_report(trait_names)  
     rr.to_csv('../out/{}_region_report.csv'.format('_'.join(trait_names)))
 
-[1] Assessing heterogeneity in spatial data using the HTA index with applications to spatial transcriptomics and imaging
+[1] Assessing heterogeneity in spatial data using the HTA index with applications to spatial transcriptomics and imaging. *Levy-Jurgenson et al.* 
