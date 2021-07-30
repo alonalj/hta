@@ -250,7 +250,7 @@ def run_visium_simple_for_readme():
         title = 'HTA {:.2f} (p-val: {:.2f}), region size: {}'.format(hta_stat, hta_pval, region_size)
 
         # save heterogeneity map
-    font_dict = {'family': 'normal', 'size': 9}
+    font_dict = {'family': 'DejaVu Sans', 'size': 9}
     hm.title(title, fontdict=font_dict)
     hm.savefig('../out/{}_hetero_map.jpeg'.format('_'.join(trait_names)), dpi=350)
     hm.close()
@@ -264,7 +264,7 @@ def run_visium_simple_for_readme():
 if __name__ == '__main__':
 
     # run_synthetic(region_size=8, tensor_gen_fn=_make_homogeneous_regions)
-    run_synthetic(region_size=8, tensor_gen_fn=_get_rand_tensor_for_shape)
+    # run_synthetic(region_size=8, tensor_gen_fn=_get_rand_tensor_for_shape)
     # run_synthetic(region_size=8, tensor_gen_fn=_make_heterogeneous_regions)
     #
     # run_visium(gene_exp=True)
@@ -273,6 +273,6 @@ if __name__ == '__main__':
     # run_visium(gene_exp=False, is_clusters=True)
     # run_visium_clusters()
     # run_visium(gene_exp=False, curated_traits_biocarta=True)
-    # run_visium_simple_for_readme()
+    run_visium_simple_for_readme()
 
     # run_visium_example()

@@ -1,22 +1,32 @@
 import setuptools
 
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="hta_stats", # Replace with your own username
-    version="1.0",
+    name="hta",
+    version="0.0.2",
     author="Alona Levy-Jurgenson",
     author_email="levyalona@gmail.com",
-    description="Spatial heterogeneity tools and statistics",
+    description="Statistically assess the level of both spatial and global heterogeneity within a spatial sample.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="TODO_https://github.com/pypa/sampleproject",
-    packages=setuptools.find_packages(),
+    url="https://github.com/alonalj/hta",
+    project_urls={
+        "Bug Tracker": "https://github.com/alonalj/hta/issues",
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    package_dir={"": "hta_stats"},
+    packages=setuptools.find_packages(where="hta_stats"),
+    python_requires=">=3.8",
+    install_requires=[
+        'numpy',
+        'scipy',
+        'pandas',
+        'matplotlib'
+    ]
 )

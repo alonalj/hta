@@ -163,7 +163,7 @@ class Visium():
             tissue_positions.append(position)
             tissue_mask[row, col] = 1
 
-        plot_heatmap(tissue_mask, 'tissue_mask') # TODO
+        # plot_heatmap(tissue_mask, 'tissue_mask') # TODO
         self.tissue_positions = tissue_positions
         self.tissue_mask = tissue_mask
 
@@ -240,9 +240,9 @@ class Visium():
         for t in trait_names:
             assert t in self.traits_available, "Trait {} not in data. Use .traits_available to see which are available.".format(t)
 
-    def plot_heatmap_per_trait(self, out_path):
-        for trait_ix in range(self.trait_tensor.shape[-1]):
-            plot_heatmap(self.trait_tensor[:, :, trait_ix], 'visium_{}'.format(self.traits_available[trait_ix]), out_path)
+    # def plot_heatmap_per_trait(self, out_path):
+    #     for trait_ix in range(self.trait_tensor.shape[-1]):
+    #         plot_heatmap(self.trait_tensor[:, :, trait_ix], 'visium_{}'.format(self.traits_available[trait_ix]), out_path)
 
     def _binarize(self, trait_names, threshold_fn=np.median): #TODO: separate binarization from submatrix with trait names
         for trait_ix in range(len(trait_names)):
