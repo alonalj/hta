@@ -1,5 +1,5 @@
-# from hta_stats.hta import *
-
+from hta.stats import *
+from hta.utils import *
 
 def _make_heterogeneous_regions(shape, region_size):
     '''
@@ -24,6 +24,15 @@ def _make_homogeneous_regions(shape, region_size):
     M = np.concatenate([M_1, M_2], axis=-1)
     return M
 
+def _get_rand_tensor_for_shape(shape, region_size, n_traits=2, p=0.5):
+    M = []
+    for i in range(n_traits):
+        _M = np.random.choice(np.array([1, 0]), size=shape, p=[p, 1 - p])
+        if len(M) == 0:
+            M = _M
+        else:
+            M = np.concatenate([M, _M], axis=-1)
+    return M
 
 def run_synthetic(region_size, tensor_gen_fn):
     print("Running synthetic example.")
@@ -178,8 +187,8 @@ def run_visium(gene_exp=True, testing_rand=False, lower_half_of_tissue=False, is
     rr.to_csv('../out/region_report_{}_{}.csv'.format('visium', '_'.join(trait_names)))
 
 def run_visium_clusters():
-    from hta_stats.utils import Visium
-    from hta_stats.hta import HTA
+    from utils import Visium
+    from stats import HTA
 
     path = "../res/human_breast_cancer/Block_A_sec_1"
     k = 10
@@ -208,8 +217,8 @@ def run_visium_clusters():
 
 
 def run_visium_simple_for_readme():
-    from hta_stats.hta import HTA
-    from hta_stats.utils import Visium
+    from stats import HTA
+    from utils import Visium
 
     path = "../res/human_breast_cancer/Block_A_sec_1"  # path to 'data folder' in above hierarchy
     trait_names = ['ERBB2', 'CD8A']  # names of features to use in features.tsv.gz
@@ -255,13 +264,14 @@ def run_visium_simple_for_readme():
 if __name__ == '__main__':
 
     # run_synthetic(region_size=8, tensor_gen_fn=_make_homogeneous_regions)
+    run_synthetic(region_size=8, tensor_gen_fn=_get_rand_tensor_for_shape)
     # run_synthetic(region_size=8, tensor_gen_fn=_make_heterogeneous_regions)
     #
     # run_visium(gene_exp=True)
     # run_visium(gene_exp=True, lower_half_of_tissue=True)
     # run_visium(gene_exp=True, testing_rand=True)
     # run_visium(gene_exp=False, is_clusters=True)
-    run_visium_clusters()
+    # run_visium_clusters()
     # run_visium(gene_exp=False, curated_traits_biocarta=True)
     # run_visium_simple_for_readme()
 

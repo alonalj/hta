@@ -5,7 +5,7 @@ from scipy import stats
 import matplotlib.pyplot as plt
 from collections import Counter
 
-from utils import apply_tissue_mask
+from hta.utils import apply_tissue_mask
 
 CLT_REPEAT = 1000
 EPSILON = 1e-100
@@ -131,7 +131,7 @@ class HTA:
 
     def calc(self):
         ''' Main function for computing HTA. Handles both HTA index value and p-value.
-        returns: hta_stats and Lyapunov CLT p-value
+        returns: hta and Lyapunov CLT p-value
         '''
 
         self._t_regions, self._t_weights, self._t_regions_ijk_nonempty = self._get_region_data_from_tensor(self._t)
@@ -203,7 +203,7 @@ class HTA:
         if len(self._combination_ids_kept) > 0:
             n_trait_combs_actual = len(self._combination_ids_kept)
         else:
-            n_trait_combs_actual = len(trait_comb_ids)-1*(0 in trait_comb_to_linear_id.keys())  # -1 for empty combination
+            n_trait_combs_actual = len(trait_comb_ids)-1*(0 in trait_comb_to_linear_id.keys())  # -1 if empty combination in trait_comb_to_linear_id.keys()
         # print("actual N trait combs = {}".format(n_trait_combs_actual))
         return n_trait_combs_actual, trait_comb_to_linear_id
 

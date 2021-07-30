@@ -14,7 +14,7 @@ Since generating a trait-combination matrix may be complicated, HTA generates it
 
 For **example**, for 2 traits and a 2D space of 32x32, let's generate some random input to HTA:
 	
-	from hta_stats.hta import HTA
+	from hta.stats import HTA
 	
     n_traits = 2
     t_shape = (32, 32, n_traits) 
@@ -81,8 +81,8 @@ data_folder
 
 You are now ready to load your Visium data and use HTA:
 
-    from hta_stats.hta import HTA  
-    from hta_stats.utils import Visium    
+    from hta.stats import HTA  
+    from hta.utils import Visium    
     
     path = "../res/data_folder"  # path to 'data folder' in above hierarchy
     trait_names = ['ERBB2', 'CD8A']   # names of features to use in features.tsv.gz  
@@ -141,8 +141,8 @@ As an example, you can place Visium's 'analysis' folder (see links above) under 
 The main differences in the code below compared to Example 2 above are in the lines of code marked with (***):
 
 
-    from hta_stats.utils import Visium  
-    from hta_stats.hta import HTA  
+    from hta.utils import Visium  
+    from hta.stats import HTA  
       
     path = "../res/data_folder"  
     k = 10
