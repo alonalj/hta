@@ -1,4 +1,3 @@
-    pip install hta
 
 # Welcome to the HTA package!
 
@@ -6,6 +5,11 @@ The HTA package can statistically assess the level of both spatial, and global, 
 
 ## Prerequisites
 Python 3.8 or above.
+
+## Setup
+To install the package and follow along with our examples below use the following command:
+
+    pip install hta
 
 ## Support and bug reports
 If you encounter any issues, please contact levyalona at gmail.
