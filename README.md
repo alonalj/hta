@@ -71,7 +71,7 @@ To produce the region report mentioned in the paper (which provides additional i
 
 If you are analysing Visium spatial gene expression data (e.g. any of those listed [here](https://support.10xgenomics.com/spatial-gene-expression/datasets), or [this one](https://support.10xgenomics.com/spatial-gene-expression/datasets/1.1.0/V1_Breast_Cancer_Block_A_Section_1) used in our examples below) you can use our `Visium` built-in class to generate the input format for HTA (i.e., the `t` as in Example 1). 
 
-Make sure you have the following folders from your Visium data:
+Make sure you have obtained the following files for your Visium data:
 
 > filtered_feature_bc_matrix
 >
@@ -89,9 +89,7 @@ YOUR_DATA_FOLDER
 	│   ...
 ```
 
-additionally, your project should have an 'out' folder. 
-
-You are now ready to load your Visium data and use HTA:
+You are now ready to load your Visium data and use HTA. The following code loads the data, prepares it for HTA analysis, and computes the HTA p-value:
 
     from hta.stats import HTA  
     from hta.utils import Visium    
@@ -113,7 +111,8 @@ You are now ready to load your Visium data and use HTA:
 >What is `t_mask`? It identifies, using barcodes.tsv.gz, which barcodes are under
 > the tissue, and is used to discard barcodeds that are not.
 
-Now we can proceed to produce the heterogeneity map and region report (we've left the p-val title formatting in the example below for your convenience, but you can replace it with your own title format):
+Now we can proceed to produce the heterogeneity map and region report. The code below uses the results from the previous code
+ to generate the heterogeneity map and region report. We've left the p-val title formatting code for your convenience so that you can easily replace it with your own title format:
 
   
     import math
