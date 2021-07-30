@@ -1,3 +1,5 @@
+    pip install hta
+
 # Welcome to the HTA package!
 
 The HTA package can statistically assess the level of both spatial, and global, heterogeneity within a spatial sample. HTA was specifically designed to handle multivariate spatial transcriptomics data, such as Visium samples (10x Genomics), but can be used in other domains (see our paper [1] for further details).
@@ -17,7 +19,8 @@ Since generating a trait-combination matrix may be complicated, HTA generates it
 For **example**, for 2 traits and a 2D space of 32x32, let's generate some random input to HTA:
 	
 	from hta.stats import HTA
-	
+	import numpy as np
+
     n_traits = 2
     t_shape = (32, 32, n_traits) 
     t = np.random.random(t_shape)   # random values between 0 and 1
@@ -50,7 +53,7 @@ For **example**:
         .format(hta_stat, hta_pval, region_size)
     font_dict = {'family': 'arial', 'size': 11}
     hm.title(title, fontdict=font_dict)
-    hm.savefig('../out/result.jpeg', dpi=350)
+    hm.savefig('result.jpeg', dpi=350)
     hm.close()
 
 ### Region report:
@@ -58,7 +61,7 @@ For **example**:
 To produce the region report mentioned in the paper (which provides additional information on each region) you can use the following code:
 
     rr = hta.region_report(trait_names)
-    rr.to_csv('../out/region_report.csv')
+    rr.to_csv('region_report.csv')
 
 # Example 2 - Visium data
 
@@ -69,9 +72,9 @@ Make sure you have the following folders from your Visium data:
 > filtered_feature_bc_matrix
 > spatial
 
-and place them in a folder hierarchy as shown below (all shown files are required):
+and place them in a folder hierarchy as shown below (all shown files are required, and all file/folder names must be identical to those shown below, except for the data folder name):
  ```
-data_folder
+YOUR_DATA_FOLDER
 └───filtered_feature_bc_matrix
 │   │   barcodes.tsv.gz
 │   │   features.tsv.gz
@@ -81,12 +84,14 @@ data_folder
 	│   ...
 ```
 
+additionally, your project should have an 'out' folder. 
+
 You are now ready to load your Visium data and use HTA:
 
     from hta.stats import HTA  
     from hta.utils import Visium    
     
-    path = "../res/data_folder"  # path to 'data folder' in above hierarchy
+    path = "/PATH_TO/YOUR_DATA_FOLDER" # TODO: insert path to 'YOUR_DATA_FOLDER' (no '/' on end)
     trait_names = ['ERBB2', 'CD8A']   # names of features to use in features.tsv.gz  
       
     # load and prepare visium data for HTA  
@@ -98,6 +103,7 @@ You are now ready to load your Visium data and use HTA:
     region_size = 15   # modify region_size as needed
     hta = HTA(t, region_size=region_size, tissue_mask=t_mask) 
     hta_stat, hta_pval = hta.calc()
+    print("HTA p-value: ", hta_pval)
 
 >What is `t_mask`? It identifies, using barcodes.tsv.gz, which barcodes are under
 > the tissue, and is used to discard barcodeds that are not.
@@ -124,21 +130,23 @@ Now we can proceed to produce the heterogeneity map and region report (we've lef
     # save heterogeneity map 
     font_dict = {'family': 'normal', 'size': 9}  
     hm.title(title, fontdict=font_dict)  
-    hm.savefig('../out/{}_hetero_map.jpeg'.format('_'.join(trait_names)), dpi=350)  
+    hm.savefig('{}_hetero_map.jpeg'.format('_'.join(trait_names)), dpi=350)  
     hm.close()  
       
     # save region report  
     rr = hta.region_report(trait_names)  
-    rr.to_csv('../out/{}_region_report.csv'.format('_'.join(trait_names)))
+    rr.to_csv('{}_region_report.csv'.format('_'.join(trait_names)))
 
 
 
 
 # Example 3 - Visium with cluster id per barcode
 
+(*) This is slightly more advanced. We recommend going through the previous Visium example before attempting this one.
+
 You can also use HTA with cluster IDs generated per barcode. The best example is using the cluster IDs provided in Visium's analysis folder, but you can use your own cluster IDs, provided they have the same format. 
 
-As an example, you can place Visium's 'analysis' folder (see links above) under your 'data_folder'. The 'analysis' folder contains many k-means clustering results where each barcode has a cluster ID.  
+As an example, you can place Visium's 'analysis' folder (see links above) under your 'YOUR_DATA_FOLDER'. The 'analysis' folder contains many k-means clustering results where each barcode has a cluster ID.  
 
 The main differences in the code below compared to Example 2 above are in the lines of code marked with (***):
 
@@ -146,7 +154,7 @@ The main differences in the code below compared to Example 2 above are in the li
     from hta.utils import Visium  
     from hta.stats import HTA  
       
-    path = "../res/data_folder"  
+    path = "/PATH_TO/YOUR_DATA_FOLDER" # TODO: insert path to 'YOUR_DATA_FOLDER' (no '/' on end)
     k = 10
     clusters_path = '{}/analysis/clustering/kmeans_{}_clusters/clusters.csv'.format(path, k)
     trait_names = [str(i+1) for i in range(k)]  
