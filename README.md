@@ -12,7 +12,7 @@ To install the package and follow along with our examples below use the followin
     pip install hta
 
 ## Support and bug reports
-If you encounter any issues, please contact levyalona at gmail.
+If you encounter any issues, please contact levy alona (as one word) through gmail.
 
 # Example 1 - Synthetic Data
 
