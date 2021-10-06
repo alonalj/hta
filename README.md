@@ -3,6 +3,7 @@
 
 The HTA package can statistically assess the level of both spatial, and global, heterogeneity within a spatial sample. HTA was specifically designed to handle multivariate spatial transcriptomics data, such as Visium samples (10x Genomics), but can be used in other domains (see our paper [1] for further details).
 
+If you use hta in your research, pleas cite: [Levy-Jurgenson et al. (Bioinformatics, 2021) [1].](https://doi.org/10.1093/bioinformatics/btab569)
 
 ## Installation
 You will need Python 3.8 or above.
