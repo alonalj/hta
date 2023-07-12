@@ -90,7 +90,7 @@ YOUR_DATA_FOLDER
 	│   ...
 ```
 
-You are now ready to load your Visium data and use HTA. The following code loads the data, prepares it for HTA analysis, and computes the HTA p-value:
+You are now ready to load your Visium data and use HTA. The following code loads the data (note that this may take around 30s), prepares it for HTA analysis, and computes the HTA p-value:
 
     from hta.stats import HTA  
     from hta.utils import Visium    
@@ -112,7 +112,7 @@ You are now ready to load your Visium data and use HTA. The following code loads
 >What is `t_mask`? It identifies, using barcodes.tsv.gz, which barcodes are under
 > the tissue, and is used to discard barcodeds that are not.
 
-Now we can proceed to produce the heterogeneity map and region report. The code below uses the results from the previous code
+Now we can proceed to produce the heterogeneity map and region report. The code below uses the results from the previous block of code
  to generate the heterogeneity map and region report. We've left the p-val title formatting code for your convenience so that you can easily replace it with your own title format:
 
   
@@ -188,4 +188,34 @@ The main differences in the code below compared to Example 2 above are in the li
     rr = hta.region_report(trait_names)  
     rr.to_csv('../out/{}_region_report.csv'.format('_'.join(trait_names)))
 
+
+# Example 4 - 3D (e.g., MRI images)    
+    
+    from hta.stats import HTA
+    from hta.utils import Images
+
+    trait_names = ['PD', 'T2']
+    imgs = Images('../mri/mri/normal_ageing', trait_names, ['032', '034', '036'], 'gif')
+    
+    t = imgs.prep()
+    
+    # For 3D region size, note the [x,y,3] specification below:
+    region_size = [130, 130, 3]
+    hta = HTA(t, region_size=region_size, n_repeat=100)
+    
+    hti_stat, _, _ = hta._HTI(t)
+    hta_stat, hta_pval_clt = hta.calc()
+    
+    hm = hta.plot_heterogeneity_map(trait_names, dot_size=0.1)
+    title = '{} HTA_{:.2f} (p-val: {:.2e} (CLT))\nglobal_hti={:.2f}\n region_size={}' \
+        .format('mri', hta_stat, hta_pval_clt, hti_stat, region_size)
+    font_dict = {'family': 'normal', 'size': 10}
+    hm.title(title, fontdict=font_dict)
+    hm.savefig('../out/{}.png'.format(title), dpi=600)
+    hm.close()
+    
+    print("{} region_size {} \nhta = {}, hta_pval = {}".format('mri', region_size, hta_stat, hta_pval_clt))
+    rr = hta.region_report(trait_names)
+    rr.to_csv('../out/region_report_{}.csv'.format('imgs'))
+    
 [1] Assessing heterogeneity in spatial data using the HTA index with applications to spatial transcriptomics and imaging. *Levy-Jurgenson et al.* 
