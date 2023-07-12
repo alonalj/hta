@@ -274,3 +274,43 @@ class Visium():
         self._make_curated_tensor(df, threshold_fn)
         self._preprocess_tensor_and_tissue_mask()
         return self.trait_tensor, self.tissue_mask
+
+
+class Images():
+    def __init__(self, path, trait_names, slice_names, img_format):
+        self._path = path
+        self._traits = trait_names
+        self._slices = slice_names
+        self._img_format = img_format
+        self.trait_tensor = None
+
+    def prep(self):
+        import PIL
+
+        def is_hot(a):
+            ''' If the image is grayscale, it checks if it's above the middle threshold (more white)'''
+            in_upper_hot_quadrant = (128 < a[:,:,0])
+            return in_upper_hot_quadrant
+
+        t_3d_for_trait_all = []
+        for slice_name in self._slices:
+            trait_images_per_slice = []
+            for trait in self._traits:
+                path_trait = self._path + '/{}'.format(trait)
+                path_slice = path_trait + '/{}.{}'.format(slice_name, self._img_format)
+                im = PIL.Image.open(path_slice)
+
+                im = im.convert('RGB')
+                im_arr = np.asarray(im)
+                im_arr = is_hot(im_arr) * 1
+
+                plot_heatmap(im_arr, 'images_bin_intensity_{}_{}'.format(trait,path_slice.split('/')[-1]))
+                im_arr = np.expand_dims(im_arr, -1)
+                im_arr = np.expand_dims(im_arr, -1)
+                trait_images_per_slice.append(im_arr)
+                im.close()
+            t_3d_for_trait = np.concatenate(trait_images_per_slice, axis=-1)
+            t_3d_for_trait_all.append(t_3d_for_trait)
+        self.trait_tensor = np.concatenate(t_3d_for_trait_all, axis=2)
+
+        return self.trait_tensor
