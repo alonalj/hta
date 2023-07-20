@@ -189,7 +189,7 @@ The main differences in the code below compared to Example 2 above are in the li
     rr.to_csv('../out/{}_region_report.csv'.format('_'.join(trait_names)))
 
 
-# Example 4 - 3D (e.g., MRI images)    
+# Example 4 - Analyzing 3D spatial transcriptomics or imaging (e.g., MRI images)    
     
     from hta.stats import HTA
     from hta.utils import Images
