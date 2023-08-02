@@ -5,6 +5,8 @@ The HTA package can statistically assess the level of both spatial, and global, 
 
 If you use hta in your research, pleas cite: [Levy-Jurgenson et al. (Bioinformatics, 2021) [1].](https://doi.org/10.1093/bioinformatics/btab569)
 
+** Bioinformatics are currently experiencing issues with matching the figures to their captions. Until they fix this issue, you can see the correct image captions in the file HTA_paper.pdf in the main folder (where this README appears).
+
 ## Installation
 You will need Python 3.8 or above.
 
